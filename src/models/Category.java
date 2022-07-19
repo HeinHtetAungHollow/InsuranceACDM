@@ -1,18 +1,18 @@
 package models;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
-public  class Category 
-{
-	
+public class Category {
+
 	private int id;
 
 	private String category_name;
-	
-	
-	public Category()
-	{
-		
+
+	private List<PlanDetail> planDetails = new ArrayList<>();;
+
+	public Category() {
+
 	}
 
 	public int getId() {
@@ -23,25 +23,27 @@ public  class Category
 		this.id = id;
 	}
 
-	public String getCategoryName() {
+	public String getCategory_name() {
 		return category_name;
 	}
 
-	public void setCategoryName(String category_name) {
+	public void setCategory_name(String category_name) {
 		this.category_name = category_name;
 	}
 
+	public List<PlanDetail> getPlanDetails() {
+		return planDetails;
+	}
 
+	public void setPlanDetails(List<PlanDetail> planDetails) {
+		this.planDetails = planDetails;
+	}
 
-	public Category(int id, String category_name) {
+	public Category(int id, String category_name, List<PlanDetail> planDetails) {
 		super();
 		this.id = id;
 		this.category_name = category_name;
-		
+		this.planDetails = planDetails;
 	}
 
-	
-	
-	
-	
 }

@@ -122,8 +122,8 @@ public class CredentialInfoForm {
                             CurrentUserHolder.setLoggedInUser(employeeService.findEmployeeById(loggedInUserId));
                             JOptionPane.showMessageDialog(null, "Successfully Login");
                             frame.setVisible(false);
-                            DashboardForm dashBoardForm = new DashboardForm();
-                            dashBoardForm.frame.setVisible(true);
+                            MainForm mainForm=new MainForm();
+                            mainForm.mainFrame.setVisible(true);
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "Enter required Fields");

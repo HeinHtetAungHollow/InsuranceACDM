@@ -68,7 +68,7 @@ public class CategoryForm {
 		categoryList.forEach(c -> {
 			Object[] row = new Object[2];
 			row[0] = c.getId();
-			row[1] = c.getCategoryName();
+			row[1] = c.getCategory_name();
 			dtm.addRow(row);
 		});
 
@@ -113,7 +113,7 @@ public class CategoryForm {
 							JOptionPane.showMessageDialog(null, "Category Name cannot contain only DIGIT!!");
 
 						} else {
-							category.setCategoryName(txtCategory.getText());
+							category.setCategory_name(txtCategory.getText());
 							categoryService.updateCategory(String.valueOf(category.getId()), category);
 							resetFormData();
 							loadAllCategorys(Optional.empty());
@@ -133,7 +133,7 @@ public class CategoryForm {
 						}
 
 						else {
-							category.setCategoryName(txtCategory.getText());
+							category.setCategory_name(txtCategory.getText());
 							categoryService.saveCategory(category);
 							resetFormData();
 							loadAllCategorys(Optional.empty());
@@ -187,7 +187,7 @@ public class CategoryForm {
 				String keyword = txtSearch.getText();
 
 				loadAllCategorys(Optional.of(origianlCategoryList.stream().filter(
-						c -> c.getCategoryName().toLowerCase(Locale.ROOT).startsWith(keyword.toLowerCase(Locale.ROOT)))
+						c -> c.getCategory_name().toLowerCase(Locale.ROOT).startsWith(keyword.toLowerCase(Locale.ROOT)))
 						.collect(Collectors.toList())));
 			}
 		});
@@ -209,7 +209,7 @@ public class CategoryForm {
 
 				category = categoryService.findById(id);
 
-				txtCategory.setText(category.getCategoryName());
+				txtCategory.setText(category.getCategory_name());
 
 			}
 		});

@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.SystemColor;
@@ -16,12 +18,17 @@ import javax.swing.JTextPane;
 import models.Benefitiary;
 import models.Category;
 import models.Customer;
+import models.PaymentPlan;
+import models.Policy;
 import services.CategoryService;
+import services.PaymentPlanService;
+import services.PolicyService;
 
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.awt.event.ActionEvent;
 
 public class RegistrationForm {
@@ -29,11 +36,22 @@ public class RegistrationForm {
 	public JFrame registerFrame;
 	private JTextField textField_2;
 	private JComboBox<String> cboCategory;
+	private JComboBox<String> cboPremiumAmount;
+	
 	private Customer customer;
 	private Benefitiary benefitiary;
+
 	private List<Category> categoryList = new ArrayList<>();
 	private CategoryService categoryService;
+	private Optional<Category> selectedCategory;
+	private List<Policy> policyList = new ArrayList<>();
+	private PolicyService policyService;
 
+	private Optional<Policy> selectedPolicy;
+	private List<PaymentPlan> paymentPlanList = new ArrayList<>();
+	private PaymentPlanService paymentPlanService;
+	
+	private Optional<PaymentPlan> selectedPayment;
 	/**
 	 * Launch the application.
 	 */
@@ -57,25 +75,35 @@ public class RegistrationForm {
 		initialize();
 		initializeDependencies();
 		loadCategoryForCbo();
+		loadPremiumAmount();
 	}
 
 	public RegistrationForm(Customer customer, Benefitiary benefitiary) {
 		initialize();
 		initializeDependencies();
+		loadCategoryForCbo();
+		loadPremiumAmount();
 		this.customer = customer;
 		this.benefitiary = benefitiary;
 	}
 
 	private void initializeDependencies() {
 		this.categoryService = new CategoryService();
+		this.policyService = new PolicyService();
+		this.paymentPlanService = new PaymentPlanService();
 	}
 
 	private void loadCategoryForCbo() {
 		this.cboCategory.addItem("Select Category");
-		this.categoryList=this.categoryService.findAllCategorys();
-		this.categoryList.forEach(cl-> cboCategory.addItem(cl.getCategoryName()));
+		this.categoryList = this.categoryService.findAllCategorys();
+		this.categoryList.forEach(cl -> cboCategory.addItem(cl.getCategory_name()));
 	}
-
+	private void loadPremiumAmount() {
+		this.cboPremiumAmount.addItem("Select Amount");
+		this.cboPremiumAmount.addItem("5000000");
+		this.cboPremiumAmount.addItem("10000000");
+		this.cboPremiumAmount.addItem("15000000");
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -194,31 +222,23 @@ public class RegistrationForm {
 		cboCategory.setBounds(174, 67, 157, 22);
 		customerPanel.add(cboCategory);
 
-		JComboBox cboPolicy = new JComboBox();
-		cboPolicy.setModel(new DefaultComboBoxModel(new String[] { "Policy" }));
+		JComboBox<String> cboPolicy = new JComboBox<>();
+		// cboPolicy.setModel(new DefaultComboBoxModel(new String[] { "Policy" }));
 		cboPolicy.setBounds(174, 131, 157, 22);
 		customerPanel.add(cboPolicy);
 
-		JComboBox cboPaymentPlan = new JComboBox();
-		cboPaymentPlan.setModel(new DefaultComboBoxModel(new String[] { "Month" }));
+		JComboBox<String> cboPaymentPlan = new JComboBox<>();
+		// cboPaymentPlan.setModel(new DefaultComboBoxModel(new String[] { "Month" }));
 		cboPaymentPlan.setBounds(174, 280, 90, 22);
 		customerPanel.add(cboPaymentPlan);
 
-		JComboBox cboPremiumAmount = new JComboBox();
-		cboPremiumAmount.setModel(new DefaultComboBoxModel(new String[] { "Premium Amount" }));
+		cboPremiumAmount = new JComboBox<>();
+		// cboPremiumAmount.setModel(new DefaultComboBoxModel(new String[] { "Premium
+		// Amount" }));
 		cboPremiumAmount.setBounds(174, 345, 157, 22);
 		customerPanel.add(cboPremiumAmount);
 
 		JButton btnConfirm = new JButton("Confirm");
-		btnConfirm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				RegisterConfirmForm registerConfirmForm = new RegisterConfirmForm();
-				registerConfirmForm.registerConfirmFrame.setVisible(true);
-				registerFrame.setVisible(false);
-
-			}
-		});
 		btnConfirm.setForeground(new Color(25, 25, 112));
 		btnConfirm.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnConfirm.setBounds(339, 494, 155, 29);
@@ -229,6 +249,76 @@ public class RegistrationForm {
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnBack.setBounds(566, 497, 155, 29);
 		panel.add(btnBack);
+
+		cboCategory.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (cboCategory.getSelectedIndex() != 0 && cboCategory.getSelectedIndex() != -1) {
+					cboPolicy.removeAllItems();
+					cboPolicy.addItem("Policy");
+					selectedCategory = categoryList.stream()
+							.filter(c -> c.getCategory_name().equals(cboCategory.getSelectedItem())).findFirst();
+					int s = selectedCategory.map(c -> c.getId()).get();
+					policyList = policyService.findPolicyListByCategoryId(String.valueOf(s));
+					policyList.forEach(p -> cboPolicy.addItem(p.getPlanName()));
+				} else {
+					cboPolicy.removeAllItems();
+					cboPolicy.addItem("Policy");
+				}
+			}
+		});
+
+		cboPolicy.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (cboPolicy.getSelectedIndex() != 0 && cboPolicy.getSelectedIndex() != -1) {
+					cboPaymentPlan.removeAllItems();
+					cboPaymentPlan.addItem("Payment Plan");
+					selectedPolicy=policyList.stream()
+							.filter(p->p.getPlanName().equals(cboPolicy.getSelectedItem())).findFirst();
+					int id=selectedPolicy.map(sp->sp.getId()).get();
+					paymentPlanList=paymentPlanService.findPaymentPlanListByPolicyId(String.valueOf(id));
+					paymentPlanList.forEach(ppl->cboPaymentPlan.addItem(String.valueOf(ppl.getPayplan())));
+				} else {
+					cboPaymentPlan.removeAllItems();
+					cboPaymentPlan.addItem("Payment Plan");
+				}
+			}
+		});
+		
+		btnConfirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selectedPayment=paymentPlanList.stream()
+						.filter(pp->pp.getPayplan()==(Integer.parseInt((String) cboPaymentPlan.getSelectedItem()))).findFirst();
+				int paymentplan_id=selectedPayment.map(spp->spp.getId()).get();
+				PaymentPlan paymentPlan=new PaymentPlan();
+				paymentPlan=paymentPlanService.findById(String.valueOf(paymentplan_id));
+				
+				if(paymentPlan!=null && cboPremiumAmount.getSelectedIndex()!=0 && cboPremiumAmount.getSelectedIndex()!=-1) {
+					RegisterConfirmForm registerConfirmForm = new RegisterConfirmForm(
+							customer,benefitiary,paymentPlan,Long.parseLong((String) cboPremiumAmount.getSelectedItem()));
+					registerConfirmForm.registerConfirmFrame.setVisible(true);
+					registerFrame.setVisible(false);
+				}else {
+					JOptionPane.showMessageDialog(null, "Select All Fields!");
+				}			
+			}
+		});
+
+		btnBack.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				CustomerInfoForm customerInfoForm = new CustomerInfoForm();
+				customerInfoForm.customerInfoFrame.setVisible(true);
+				registerFrame.setVisible(false);
+			}
+		});
 	}
 
 }

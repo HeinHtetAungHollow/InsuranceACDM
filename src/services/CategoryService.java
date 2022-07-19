@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Category;
+import models.PlanDetail;
 import repositories.CategoryRepo;
 import config.DBConfig;
 import shared.exception.AppException;
@@ -34,7 +35,7 @@ public class CategoryService implements CategoryRepo{
 			PreparedStatement ps = this.dbConfig.getConnection()
 					.prepareStatement("INSERT INTO insurance_category (category_name)  VALUES (?);");
 
-			ps.setString(1, category.getCategoryName());
+			ps.setString(1, category.getCategory_name());
 			ps.executeUpdate();
 			ps.close();
 
@@ -53,7 +54,7 @@ public class CategoryService implements CategoryRepo{
 			PreparedStatement ps = this.dbConfig.getConnection()
 					.prepareStatement("UPDATE insurance_category SET category_name = ? WHERE category_id = ?");
 
-			ps.setString(1, category.getCategoryName());
+			ps.setString(1, category.getCategory_name());
 			ps.setString(2, id);
 			ps.executeUpdate();
 
@@ -123,5 +124,6 @@ public class CategoryService implements CategoryRepo{
 			e.printStackTrace();
 		}
 	}
+
 
 }

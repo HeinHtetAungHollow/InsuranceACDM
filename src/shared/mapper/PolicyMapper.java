@@ -15,7 +15,7 @@ public class PolicyMapper {
         	Category category=new Category();
         	category.setId(rs.getInt("cat_id"));
         	System.out.println(category.getId());
-        	category.setCategoryName(rs.getString("category_name"));
+        	category.setCategory_name(rs.getString("category_name"));
         	policy.setCategory(category);
         } catch (Exception e) {
             e.printStackTrace();

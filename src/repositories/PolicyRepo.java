@@ -5,13 +5,15 @@ import models.Policy;
 import java.util.List;
 
 public interface PolicyRepo {
-    void savePolicy(Policy policy);
+	void savePolicy(Policy policy);
 
-    void updatePolicy(String id, Policy policy);
+	void updatePolicy(String id, Policy policy);
 
-    List<Policy> findAllPolicys();
+	List<Policy> findAllPolicys();
 
-    Policy findById(String id);
+	Policy findById(String id);
 
-    void deletePolicy(String id);
+	List<Policy> findPolicyListByCategoryId(String categoryId);
+
+	void deletePolicy(String id);
 }

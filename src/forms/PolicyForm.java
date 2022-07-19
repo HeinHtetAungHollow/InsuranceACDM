@@ -178,12 +178,9 @@ public class PolicyForm {
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (null != policy) {
-					try {
+					
 						policyService.deletePolicy(policy.getId() + "");
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					
 					resetFormData();
 					loadAllPolicys(Optional.empty());
 					policy = null;
@@ -226,7 +223,7 @@ public class PolicyForm {
 
 				txtPolicy.setText(policy.getPlanName());
 				txtDuration.setText(String.valueOf(policy.getDuration()));
-				lblNewLabel.setText(policy.getCategory().getCategoryName());
+				lblNewLabel.setText(policy.getCategory().getCategory_name());
 			}
 		});
 

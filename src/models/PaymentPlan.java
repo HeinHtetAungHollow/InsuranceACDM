@@ -1,5 +1,8 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public  class PaymentPlan 
 {
 	
@@ -9,18 +12,19 @@ public  class PaymentPlan
 	
 	private Policy policy;
 	
-	
+	private List<PlanDetail> planDetails=new ArrayList<>();
 
 	public PaymentPlan()
 	{
 		
 	}
 
-	public PaymentPlan(int id, int payplan, Policy policy) {
+	public PaymentPlan(int id, int payplan, Policy policy, List<PlanDetail> planDetails) {
 		super();
 		this.id = id;
 		this.payplan = payplan;
 		this.policy = policy;
+		this.planDetails = planDetails;
 	}
 
 	public int getId() {
@@ -46,5 +50,15 @@ public  class PaymentPlan
 	public void setPolicy(Policy policy) {
 		this.policy = policy;
 	}
+
+	public List<PlanDetail> getPlanDetails() {
+		return planDetails;
+	}
+
+	public void setPlanDetails(List<PlanDetail> planDetails) {
+		this.planDetails = planDetails;
+	}
+	
+	
 	
 }

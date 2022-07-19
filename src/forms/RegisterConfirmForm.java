@@ -12,6 +12,12 @@ import java.awt.SystemColor;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
+
+import models.Benefitiary;
+import models.Customer;
+import models.PaymentPlan;
+import models.PlanDetail;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -31,7 +37,10 @@ public class RegisterConfirmForm {
 	private JTextField textField_10;
 	private JTextField textField_11;
 	private JTextField textField_12;
-
+	private Customer customer;
+	private Benefitiary benefitiary;
+	private PaymentPlan paymentPlan;
+	private PlanDetail planDetail;
 	/**
 	 * Launch the application.
 	 */
@@ -54,7 +63,19 @@ public class RegisterConfirmForm {
 	public RegisterConfirmForm() {
 		initialize();
 	}
-
+	public RegisterConfirmForm(Customer customer,Benefitiary benefitiary,PaymentPlan paymentPlan,long premiumAmount) {
+		initialize();
+		this.customer=customer;
+		this.benefitiary=benefitiary;
+		this.paymentPlan=paymentPlan;
+		this.planDetail=new PlanDetail();
+		this.planDetail.setPremiumAmount(premiumAmount);
+		
+		System.out.println(this.customer.getCustomer_name()+"  "+this.benefitiary.getBenefitiary_name()
+				+"  "+ this.paymentPlan.getPayplan()+"  "+this.paymentPlan.getPolicy().getPlanName()+"  "+
+				this.paymentPlan.getPolicy().getCategory().getCategory_name());
+		
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */

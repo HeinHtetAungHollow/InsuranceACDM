@@ -1,17 +1,22 @@
 package repositories;
 
 import models.PaymentPlan;
+import models.PlanDetail;
 
 import java.util.List;
 
 public interface PaymentPlanRepo {
-    void saveCategory(PaymentPlan paymentPlan);
+	void savePaymentPlan(PaymentPlan paymentPlan);
 
-    void updatePaymentPlan(String id, PaymentPlan paymentPlan);
+	void updatePaymentPlan(String id, PaymentPlan paymentPlan);
 
-    List<PaymentPlan> findAllPaymentPlans();
+	void createPlanDetail(PlanDetail planDetail);
 
-    PaymentPlan findById(String id);
+	List<PaymentPlan> findAllPaymentPlans();
 
-    void deletePaymentPlan(String id);
+	List<PaymentPlan> findPaymentPlanListByPolicyId(String policyId);
+
+	PaymentPlan findById(String id);
+
+	void deletePaymentPlan(String id);
 }

@@ -10,54 +10,58 @@ import java.util.List;
 import models.Policy;
 import repositories.PolicyRepo;
 import config.DBConfig;
-import shared.exception.AppException;
 import shared.mapper.PolicyMapper;
 
-import javax.swing.*;
 
-public class PolicyService {
+
+
+public class PolicyService implements PolicyRepo{
 
 	private final DBConfig dbConfig = new DBConfig();
 	private PolicyMapper policyMapper;
 
 	public PolicyService() {
 		this.policyMapper = new PolicyMapper();
+		
 	}
 
 	public void savePolicy(Policy policy) {
 		try {
 
 			PreparedStatement ps = this.dbConfig.getConnection()
-					.prepareStatement("INSERT INTO policy_plan (plan_name,duration)  VALUES (?,?);");
+					.prepareStatement("INSERT INTO policy_plan (plan_name,duration,cat_id)  VALUES (?,?,?);");
 
 			ps.setString(1, policy.getPlanName());
 			ps.setInt(2, policy.getDuration());
+			ps.setInt(3, policy.getCategory().getId());
 			ps.executeUpdate();
 			ps.close();
 
-		} catch (SQLException e) {
-			if (e instanceof SQLException) {
-				JOptionPane.showMessageDialog(null, "Already Exists");
-			}
-		}
+		} 
+		catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	public void updatePolicy(String id, Policy policy) {
+//		System.out.print(String.valueOf(policy.getCategory().getId()));
 		try {
 
 			PreparedStatement ps = this.dbConfig.getConnection()
-					.prepareStatement("UPDATE policy_plan SET plan_name = ?, duration = ? WHERE id = ?");
+					.prepareStatement("UPDATE policy_plan SET plan_name = ?, duration = ?, cat_id = ? WHERE policy_id = ?");
 
 			ps.setString(1, policy.getPlanName());
 			ps.setInt(2, policy.getDuration());
-			ps.setString(3, id);
-			ps.execute();
+			ps.setInt(3, policy.getCategory().getId());
+			ps.setString(4, id);
+			ps.executeUpdate();
 
 			ps.close();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} 
+		catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	public List<Policy> findAllPolicys() {
@@ -65,8 +69,10 @@ public class PolicyService {
 		List<Policy> policyList = new ArrayList<>();
 		try (Statement st = this.dbConfig.getConnection().createStatement()) {
 
-			String query = "SELECT * FROM policy_plan " + "INNER JOIN insurance_category "
-					+ "ON insurance_category.category_id=policy_plan.cat_id";
+			String query = "SELECT * FROM policy_plan " 
+						+ "INNER JOIN insurance_category "
+						+ "ON insurance_category.category_id=policy_plan.cat_id "
+						+ "ORDER BY policy_plan.policy_id";
 
 			ResultSet rs = st.executeQuery(query);
 
@@ -101,16 +107,52 @@ public class PolicyService {
 
 		return policy;
 	}
+	
+	@Override
+    public List<Policy> findPolicyListByCategoryId(String categoryId) {
 
-	public void deletePolicy(String id) throws SQLException {
+        List<Policy> policyList = new ArrayList<>();
 
-		String query = "DELETE FROM policy_plan WHERE id= ?;";
+        try (Statement st = this.dbConfig.getConnection().createStatement()) {
 
-		PreparedStatement ps = this.dbConfig.getConnection().prepareStatement(query);
+            String query = "SELECT * FROM policy_plan\n" +
+                    "INNER JOIN insurance_category\n" +
+                    "ON insurance_category.category_id = policy_plan.cat_id\n" +
+                    "WHERE category_id='" + categoryId + "'";
 
-		ps.setString(1, id);
-		ps.executeUpdate();
-		ps.close();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                Policy policy = new Policy();
+
+                policyList.add(this.policyMapper.mapToPolicy(policy, rs));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return policyList;
+	}
+
+	public void deletePolicy(String id) {
+
+		String query = "DELETE FROM policy_plan WHERE policy_id= ?;";
+
+		PreparedStatement ps;
+		try {
+			ps = this.dbConfig.getConnection().prepareStatement(query);
+			ps.setString(1, id);
+			ps.executeUpdate();
+			ps.close();
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
 
 	}
 

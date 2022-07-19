@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,7 +25,11 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import models.Category;
+import models.Policy;
 import services.CategoryService;
+import services.PolicyService;
+
+import com.toedter.calendar.JDateChooser;
 
 public class MainForm {
 
@@ -35,6 +40,10 @@ public class MainForm {
 	private List<Category> categoryList = new ArrayList<>();
 	private CategoryService categoryService;
 	private JComboBox<String> cboInsurance;
+	private JComboBox<String> cboPlan;
+	private Optional<Category> selectedCategory;
+	private List<Policy> policyList=new ArrayList<>();
+	private PolicyService policyService;
 	/**
 	 * Launch the application.
 	 */
@@ -63,23 +72,25 @@ public class MainForm {
 	
 	private void setTableDesign() {
 		dtm.addColumn("ID");
-		dtm.addColumn("Name");
+		dtm.addColumn("Customer Name");
 		dtm.addColumn("Phone");
 		dtm.addColumn("Email");
-		dtm.addColumn("Address");
-		dtm.addColumn("Username");
-		dtm.addColumn("Status");
+		dtm.addColumn("Insurance");
+		dtm.addColumn("Plan");
+		dtm.addColumn("StartDate");
+		dtm.addColumn("End Date");
 		this.tblRegister.setModel(dtm);
 	}
 	
 	private void initializeDependencies() {
 		this.categoryService=new CategoryService();
+		this.policyService=new PolicyService();
 	}
 	
 	private void loadCategoryForCbo() {
 		this.cboInsurance.addItem("Select Category");
 		this.categoryList=this.categoryService.findAllCategorys();
-		this.categoryList.forEach(cl-> cboInsurance.addItem(cl.getCategoryName()));
+		this.categoryList.forEach(cl-> cboInsurance.addItem(cl.getCategory_name()));
 	}
 	/**
 	 * Initialize the contents of the frame.
@@ -145,25 +156,26 @@ public class MainForm {
 		cboInsurance = new JComboBox<>();
 		cboInsurance.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		//cboInsurance.setModel(new DefaultComboBoxModel(new String[] {"Insurance"}));
-		cboInsurance.setBounds(45, 139, 155, 27);
+		cboInsurance.setBounds(45, 167, 145, 27);
 		mainFrame.getContentPane().add(cboInsurance);
 		
-		JComboBox cboPlan = new JComboBox();
-		cboPlan.setModel(new DefaultComboBoxModel(new String[] {"Plan"}));
+		cboPlan = new JComboBox<>();
+		//cboPlan.setModel(new DefaultComboBoxModel(new String[] {"Plan"}));
+		cboPlan.addItem("Plan");
 		cboPlan.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		cboPlan.setBounds(234, 139, 155, 27);
+		cboPlan.setBounds(205, 167, 155, 27);
 		mainFrame.getContentPane().add(cboPlan);
 		
 		txtSearch = new JTextField();
 		txtSearch.setToolTipText("Seach By Register id,Customer Name,");
 		txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtSearch.setBounds(605, 139, 246, 27);
+		txtSearch.setBounds(677, 167, 174, 27);
 		mainFrame.getContentPane().add(txtSearch);
 		txtSearch.setColumns(10);
 		
 		JButton btnSearch = new JButton("Search");
 		btnSearch.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnSearch.setBounds(877, 139, 145, 27);
+		btnSearch.setBounds(877, 167, 145, 27);
 		mainFrame.getContentPane().add(btnSearch);
 		
 		JButton btnUpdate = new JButton("Update");
@@ -187,13 +199,64 @@ public class MainForm {
 		mainFrame.getContentPane().add(btnPayPremium);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(45, 183, 977, 415);
+		scrollPane.setBounds(45, 205, 977, 393);
 		mainFrame.getContentPane().add(scrollPane);
 
 		tblRegister = new JTable();
 		tblRegister.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		scrollPane.setViewportView(tblRegister);
+		
+		JDateChooser dateChooserStart = new JDateChooser();
+		dateChooserStart.setBounds(372, 167, 145, 27);
+		mainFrame.getContentPane().add(dateChooserStart);
+		
+		JDateChooser dateChooserEnd = new JDateChooser();
+		dateChooserEnd.setBounds(529, 167, 136, 27);
+		mainFrame.getContentPane().add(dateChooserEnd);
+		
+		JLabel lblInsurance = new JLabel("Insurance");
+		lblInsurance.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblInsurance.setBounds(46, 139, 144, 18);
+		mainFrame.getContentPane().add(lblInsurance);
+		
+		JLabel lblPlan = new JLabel("Plan");
+		lblPlan.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblPlan.setBounds(205, 139, 144, 18);
+		mainFrame.getContentPane().add(lblPlan);
+		
+		JLabel lblStartDate = new JLabel("Start Date");
+		lblStartDate.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblStartDate.setBounds(372, 139, 144, 18);
+		mainFrame.getContentPane().add(lblStartDate);
+		
+		JLabel lblEndDate = new JLabel("End Date");
+		lblEndDate.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblEndDate.setBounds(529, 139, 144, 18);
+		mainFrame.getContentPane().add(lblEndDate);
+		
+		JLabel lblRegisterIdName = new JLabel("Register Id, Name ..");
+		lblRegisterIdName.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblRegisterIdName.setBounds(677, 139, 144, 18);
+		mainFrame.getContentPane().add(lblRegisterIdName);
 
+		cboInsurance.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (cboInsurance.getSelectedIndex()!=0 && cboInsurance.getSelectedIndex()!=-1) {
+					cboPlan.removeAllItems();
+					cboPlan.addItem("Plan");
+					selectedCategory=categoryList.stream().filter(cl->cl.getCategory_name().equals(cboInsurance.getSelectedItem())).findFirst();
+					int id=selectedCategory.map(sc->sc.getId()).get();
+					policyList=policyService.findPolicyListByCategoryId(String.valueOf(id));
+					policyList.forEach(pl->cboPlan.addItem(pl.getPlanName()));
+				}else {
+					cboPlan.removeAllItems();
+					cboPlan.addItem("Plan");
+				}
+			}
+		});
 		
 		txtSearch.addKeyListener(new KeyListener() {
 			
@@ -217,5 +280,18 @@ public class MainForm {
 				
 			}
 		});
+		
+		btnRegister.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				CustomerInfoForm customerInfoForm=new CustomerInfoForm();
+				customerInfoForm.customerInfoFrame.setVisible(true);
+				mainFrame.setVisible(false);
+			}
+		});
 	}
+	
+	
 }

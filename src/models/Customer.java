@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ public class Customer {
 	private long customer_income;
 	private int medical_history;
 	private int customer_age;
-	private List<CustomerDetail> CustomerDetail;
+	private List<CustomerDetail> CustomerDetail=new ArrayList<>();
 
 	public Customer() {
 
