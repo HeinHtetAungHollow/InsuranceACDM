@@ -27,14 +27,11 @@ import shared.mapper.PaymentPlanMapper;
 public class PaymentPlanService implements PaymentPlanRepo {
 
 	private final DBConfig dbConfig = new DBConfig();
-	private PolicyMapper policyMapper;
-	private CategoryMapper categoryMapper;
 	private PaymentPlanMapper paymentPlanMapper;
-	private PolicyRepo policyRepo;
+
 	public PaymentPlanService() {
-		this.policyMapper = new PolicyMapper();
-		this.categoryMapper = new CategoryMapper();
 		this.paymentPlanMapper = new PaymentPlanMapper();
+
 		this.paymentPlanMapper.setPolicyRepo(new PolicyService());
 
 	}
@@ -124,7 +121,8 @@ public class PaymentPlanService implements PaymentPlanRepo {
 
 		try (Statement st = this.dbConfig.getConnection().createStatement()) {
 
-			String query = "SELECT * FROM payment_plan INNER JOIN policy_plan ON payment_plan.poli_id = policy_plan.policy_id WHERE policy_id='" + policyId + "'";
+			String query = "SELECT * FROM payment_plan INNER JOIN policy_plan ON payment_plan.poli_id = policy_plan.policy_id WHERE policy_id='"
+					+ policyId + "'";
 
 			ResultSet rs = st.executeQuery(query);
 
@@ -179,6 +177,37 @@ public class PaymentPlanService implements PaymentPlanRepo {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public PaymentPlan findPaymentPlanByPlanDetailId(String planDetailId) {
+		// TODO Auto-generated method stub
+		PaymentPlan paymentPlan = new PaymentPlan();
+		try (Statement st = this.dbConfig.getConnection().createStatement()) {
+			String query = "SELECT * FROM plan_detail INNER JOIN payment_plan ON"
+					+ " plan_detail.payment_id=payment_plan.id WHERE plan_detail_id='" + planDetailId + "'";
+			ResultSet rs = st.executeQuery(query);
+			while (rs.next()) {
+				paymentPlan = this.paymentPlanMapper.mapToPaymentPlan(paymentPlan, rs);
+			}
+			st.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return paymentPlan;
+	}
+
+	@Override
+	public List<PlanDetail> findPlanDetailByCategoryId(String categoryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PlanDetail> findPlanDetailByPolicyId(String policyId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

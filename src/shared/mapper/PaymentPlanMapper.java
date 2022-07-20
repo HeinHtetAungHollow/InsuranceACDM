@@ -1,9 +1,7 @@
 package shared.mapper;
 
-import models.Category;
 import models.PaymentPlan;
 import models.PlanDetail;
-import models.Policy;
 import repositories.PaymentPlanRepo;
 import repositories.PolicyRepo;
 
@@ -26,7 +24,7 @@ public class PaymentPlanMapper {
 			paymentPlan.setId(rs.getInt("id"));
 			paymentPlan.setPayplan(rs.getInt("payplan"));
 			paymentPlan.setPolicy(this.policyRepo.findById(String.valueOf(rs.getInt("poli_id"))));
-			System.out.println(paymentPlan.getPolicy().getCategory().getCategory_name());;
+			System.out.println(paymentPlan.getPolicy().getCategory().getCategory_name());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

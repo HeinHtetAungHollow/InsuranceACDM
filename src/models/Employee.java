@@ -1,8 +1,5 @@
 package models;
 
-import models.PersonInfo;
-import models.UserRole;
-
 public class Employee extends PersonInfo {
 
 	private String username;

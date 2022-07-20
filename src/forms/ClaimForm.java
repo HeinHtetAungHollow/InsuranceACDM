@@ -16,13 +16,16 @@ import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent.Cause;
 import java.awt.event.ActionEvent;
+import javax.swing.DefaultComboBoxModel;
 
 public class ClaimForm {
 
 	private JFrame frame;
 	private JTextField textField;
-
+	public Cause cause;
+	private JComboBox<models.Cause> comboBox; 
 	/**
 	 * Launch the application.
 	 */
@@ -72,30 +75,64 @@ public class ClaimForm {
 		DefaultPanel.add(lblLogo);
 		
 		JButton btnHome = new JButton("Home");
+		btnHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainForm mainForm = new MainForm();
+				mainForm.mainFrame.setVisible(true);
+				frame.setVisible(false);
+				
+			}
+		});
 		btnHome.setForeground(new Color(34, 139, 34));
 		btnHome.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnHome.setBounds(46, 95, 89, 23);
 		DefaultPanel.add(btnHome);
 		
 		JButton btnRegister = new JButton("Register");
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CustomerInfoForm customerInfoForm = new CustomerInfoForm();
+				customerInfoForm.customerInfoFrame.setVisible(true);
+				frame.setVisible(false);
+			}
+		});
 		btnRegister.setForeground(new Color(34, 139, 34));
 		btnRegister.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnRegister.setBounds(145, 97, 89, 23);
 		DefaultPanel.add(btnRegister);
 		
 		JButton btnClaimlist = new JButton("Claim List");
+		btnClaimlist.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ClaimListForm claimListForm = new ClaimListForm();
+				claimListForm.claimListFrame.setVisible(true);
+				frame.setVisible(false);
+			}
+		});
 		btnClaimlist.setForeground(new Color(34, 139, 34));
 		btnClaimlist.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnClaimlist.setBounds(244, 97, 89, 23);
 		DefaultPanel.add(btnClaimlist);
 		
 		JButton btnInsurance = new JButton("Insurance");
+		btnInsurance.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+			}
+		});
 		btnInsurance.setForeground(new Color(34, 139, 34));
 		btnInsurance.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnInsurance.setBounds(343, 97, 99, 23);
 		DefaultPanel.add(btnInsurance);
 		
 		JButton btnEmployee = new JButton("Employee");
+		btnEmployee.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EmployeeForm employeeForm = new EmployeeForm();
+				employeeForm.frame.setVisible(true);
+				frame.setVisible(false);
+			}
+		});
 		btnEmployee.setForeground(new Color(34, 139, 34));
 		btnEmployee.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnEmployee.setBounds(452, 97, 99, 23);
@@ -124,15 +161,15 @@ public class ClaimForm {
 		lblRegisterID.setBounds(40, 67, 97, 20);
 		customerPanel.add(lblRegisterID);
 		
-		JLabel lblCustomerName = new JLabel("Customer Name");
-		lblCustomerName.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblCustomerName.setBounds(40, 111, 97, 20);
-		customerPanel.add(lblCustomerName);
-		
 		JLabel lblRegisterIDInfo = new JLabel(".....");
 		lblRegisterIDInfo.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblRegisterIDInfo.setBounds(174, 67, 157, 18);
 		customerPanel.add(lblRegisterIDInfo);
+		
+		JLabel lblCustomerName = new JLabel("Customer Name");
+		lblCustomerName.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblCustomerName.setBounds(40, 111, 97, 20);
+		customerPanel.add(lblCustomerName);
 		
 		JLabel lblCustomerNameInfo = new JLabel(".....");
 		lblCustomerNameInfo.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -144,45 +181,45 @@ public class ClaimForm {
 		lblCustomerNrc.setBounds(40, 152, 97, 20);
 		customerPanel.add(lblCustomerNrc);
 		
-		JLabel lblCustomerPhone = new JLabel("Customer Phone");
-		lblCustomerPhone.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblCustomerPhone.setBounds(40, 194, 97, 20);
-		customerPanel.add(lblCustomerPhone);
-		
-		JLabel lblBenefitiaryName = new JLabel("Beneftiary Name");
-		lblBenefitiaryName.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblBenefitiaryName.setBounds(40, 238, 97, 20);
-		customerPanel.add(lblBenefitiaryName);
-		
-		JLabel lblBeneftiaryNrc = new JLabel("Beneftiary NRC");
-		lblBeneftiaryNrc.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblBeneftiaryNrc.setBounds(40, 277, 97, 20);
-		customerPanel.add(lblBeneftiaryNrc);
-		
-		JLabel lblBeneftiaryPhone = new JLabel("Beneftiary Phone");
-		lblBeneftiaryPhone.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblBeneftiaryPhone.setBounds(40, 319, 97, 20);
-		customerPanel.add(lblBeneftiaryPhone);
-		
 		JLabel lblCustomerNRCInfo = new JLabel(".....");
 		lblCustomerNRCInfo.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblCustomerNRCInfo.setBounds(174, 153, 157, 18);
 		customerPanel.add(lblCustomerNRCInfo);
+		
+		JLabel lblCustomerPhone = new JLabel("Customer Phone");
+		lblCustomerPhone.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblCustomerPhone.setBounds(40, 194, 97, 20);
+		customerPanel.add(lblCustomerPhone);
 		
 		JLabel lblCustomerPhoneInfo = new JLabel(".....");
 		lblCustomerPhoneInfo.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblCustomerPhoneInfo.setBounds(174, 195, 157, 18);
 		customerPanel.add(lblCustomerPhoneInfo);
 		
+		JLabel lblBenefitiaryName = new JLabel("Beneftiary Name");
+		lblBenefitiaryName.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblBenefitiaryName.setBounds(40, 238, 97, 20);
+		customerPanel.add(lblBenefitiaryName);
+		
 		JLabel lblBenefitiaryNameInfo = new JLabel(".....");
 		lblBenefitiaryNameInfo.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblBenefitiaryNameInfo.setBounds(174, 239, 157, 18);
 		customerPanel.add(lblBenefitiaryNameInfo);
 		
+		JLabel lblBeneftiaryNrc = new JLabel("Beneftiary NRC");
+		lblBeneftiaryNrc.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblBeneftiaryNrc.setBounds(40, 277, 97, 20);
+		customerPanel.add(lblBeneftiaryNrc);
+		
 		JLabel lblBenefitiaryNRCInfo = new JLabel(".....");
 		lblBenefitiaryNRCInfo.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblBenefitiaryNRCInfo.setBounds(174, 278, 157, 18);
 		customerPanel.add(lblBenefitiaryNRCInfo);
+		
+		JLabel lblBeneftiaryPhone = new JLabel("Beneftiary Phone");
+		lblBeneftiaryPhone.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblBeneftiaryPhone.setBounds(40, 319, 97, 20);
+		customerPanel.add(lblBeneftiaryPhone);
 		
 		JLabel lblBenefitiaryPhoneInfo = new JLabel(".....");
 		lblBenefitiaryPhoneInfo.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -219,7 +256,10 @@ public class ClaimForm {
 		lblCredential.setBounds(341, 261, 97, 20);
 		customerPanel.add(lblCredential);
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox<>();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"-select-"}));
+		comboBox.addItem(models.Cause.DISEASE);
+		comboBox.addItem(models.Cause.ACCIDENT);
 		comboBox.setBounds(486, 201, 133, 34);
 		customerPanel.add(comboBox);
 		

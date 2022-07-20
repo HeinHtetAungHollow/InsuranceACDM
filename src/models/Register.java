@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class Register {
 	private int register_id;
+	private PlanDetail planDetail;
 	private Customer customer;
 	private Employee employee;
 	private Date payDate;
@@ -15,10 +16,11 @@ public class Register {
 
 	}
 
-	public Register(int register_id, Customer customer, Employee employee, Date payDate, float payAmount,
-			boolean active) {
+	public Register(int register_id, PlanDetail planDetail, Customer customer, Employee employee, Date payDate,
+			float payAmount, boolean active) {
 		super();
 		this.register_id = register_id;
+		this.planDetail = planDetail;
 		this.customer = customer;
 		this.employee = employee;
 		this.payDate = payDate;
@@ -74,9 +76,17 @@ public class Register {
 		this.active = active;
 	}
 
+	public PlanDetail getPlanDetail() {
+		return planDetail;
+	}
+
+	public void setPlanDetail(PlanDetail planDetail) {
+		this.planDetail = planDetail;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(active, customer, employee, payAmount, payDate, register_id);
+		return Objects.hash(active, customer, employee, payAmount, payDate, planDetail, register_id);
 	}
 
 	@Override
@@ -91,8 +101,10 @@ public class Register {
 		return active == other.active && Objects.equals(customer, other.customer)
 				&& Objects.equals(employee, other.employee)
 				&& Float.floatToIntBits(payAmount) == Float.floatToIntBits(other.payAmount)
-				&& Objects.equals(payDate, other.payDate) && register_id == other.register_id;
+				&& Objects.equals(payDate, other.payDate) && Objects.equals(planDetail, other.planDetail)
+				&& register_id == other.register_id;
 	}
+
 	
 	
 }

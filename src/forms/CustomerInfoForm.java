@@ -263,7 +263,7 @@ public class CustomerInfoForm {
 		txtIncome.setBounds(175, 333, 170, 20);
 		customerPanel.add(txtIncome);
 
-		cboMedicalHistory = new JComboBox();
+		cboMedicalHistory = new JComboBox<>();
 		cboMedicalHistory.setModel(new DefaultComboBoxModel(new String[] { "Level" }));
 		cboMedicalHistory.setBounds(172, 373, 62, 22);
 		customerPanel.add(cboMedicalHistory);

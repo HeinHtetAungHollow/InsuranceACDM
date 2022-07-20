@@ -16,7 +16,13 @@ public interface PaymentPlanRepo {
 
 	List<PaymentPlan> findPaymentPlanListByPolicyId(String policyId);
 
+	PaymentPlan findPaymentPlanByPlanDetailId(String planDetailId);
+
 	PaymentPlan findById(String id);
+
+	List<PlanDetail> findPlanDetailByCategoryId(String categoryId);
+
+	List<PlanDetail> findPlanDetailByPolicyId(String policyId);
 
 	void deletePaymentPlan(String id);
 }

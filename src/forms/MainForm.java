@@ -17,6 +17,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,8 +27,11 @@ import javax.swing.table.DefaultTableModel;
 
 import models.Category;
 import models.Policy;
+import models.Register;
 import services.CategoryService;
+import services.PaymentPlanService;
 import services.PolicyService;
+import services.RegisterServices;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -43,7 +47,12 @@ public class MainForm {
 	private JComboBox<String> cboPlan;
 	private Optional<Category> selectedCategory;
 	private List<Policy> policyList=new ArrayList<>();
+	
 	private PolicyService policyService;
+	private Register register;
+	private RegisterServices registerServices;
+	private PaymentPlanService paymentPlanService;
+	private List<Register> registerList=new ArrayList<>();
 	/**
 	 * Launch the application.
 	 */
@@ -68,6 +77,7 @@ public class MainForm {
 		setTableDesign();
 		initializeDependencies();
 		loadCategoryForCbo();
+		loadAllRegister(Optional.empty());
 	}
 	
 	private void setTableDesign() {
@@ -77,6 +87,7 @@ public class MainForm {
 		dtm.addColumn("Email");
 		dtm.addColumn("Insurance");
 		dtm.addColumn("Plan");
+		dtm.addColumn("Payment Plan");
 		dtm.addColumn("StartDate");
 		dtm.addColumn("End Date");
 		this.tblRegister.setModel(dtm);
@@ -85,12 +96,45 @@ public class MainForm {
 	private void initializeDependencies() {
 		this.categoryService=new CategoryService();
 		this.policyService=new PolicyService();
+		this.register=new Register();
+		this.registerServices=new RegisterServices();
+		this.paymentPlanService=new PaymentPlanService();
 	}
 	
 	private void loadCategoryForCbo() {
 		this.cboInsurance.addItem("Select Category");
 		this.categoryList=this.categoryService.findAllCategorys();
 		this.categoryList.forEach(cl-> cboInsurance.addItem(cl.getCategory_name()));
+	}
+	
+	private void loadAllRegister(Optional<List<Register>> optionalList) {
+		this.dtm = (DefaultTableModel) this.tblRegister.getModel();
+        this.dtm.getDataVector().removeAllElements();
+        this.dtm.fireTableDataChanged();
+        
+        this.registerList=this.registerServices.loadAllRegister();
+        
+        List<Register> filteredList=optionalList.orElseGet(()->this.registerList).stream().collect(Collectors.toList());
+        
+        List<Policy> policyListTbl=new ArrayList<>();
+        
+       
+        
+        filteredList.forEach(fl->{
+        	Object[] dataRow=new Object[9];
+        	dataRow[0]=fl.getRegister_id();
+        	dataRow[1]=fl.getCustomer().getCustomer_name();
+        	dataRow[2]=fl.getCustomer().getCustomer_phone();
+        	dataRow[3]=fl.getCustomer().getCustomer_email();
+        	dataRow[4]=fl.getPlanDetail().getPaymentPlan().getPolicy().getCategory().getCategory_name();
+        	dataRow[5]=fl.getPlanDetail().getPaymentPlan().getPolicy().getPlanName();
+        	dataRow[6]=fl.getPlanDetail().getPaymentPlan().getPayplan();
+        	dataRow[7]=fl.getPlanDetail().getStartDate();
+        	dataRow[8]=fl.getPlanDetail().getEndDate();
+        	dtm.addRow(dataRow);
+        });
+        this.tblRegister.setModel(dtm);
+        
 	}
 	/**
 	 * Initialize the contents of the frame.
