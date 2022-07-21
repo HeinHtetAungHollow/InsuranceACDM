@@ -13,22 +13,23 @@ import javax.swing.JButton;
 import java.awt.SystemColor;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
-import javax.swing.JTextPane;
 
 import models.Benefitiary;
 import models.Category;
 import models.Customer;
 import models.PaymentPlan;
 import models.Policy;
+import models.PremiumAmount;
 import services.CategoryService;
 import services.PaymentPlanService;
 import services.PolicyService;
 
-import javax.swing.DefaultComboBoxModel;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.awt.event.ActionEvent;
 
 public class RegistrationForm {
@@ -52,6 +53,9 @@ public class RegistrationForm {
 	private PaymentPlanService paymentPlanService;
 	
 	private Optional<PaymentPlan> selectedPayment;
+	private PremiumAmount premiumAmount;
+	
+	private JComboBox<String> cboPolicy;
 	/**
 	 * Launch the application.
 	 */
@@ -75,16 +79,17 @@ public class RegistrationForm {
 		initialize();
 		initializeDependencies();
 		loadCategoryForCbo();
-		loadPremiumAmount();
+		//loadPremiumAmount();
 	}
 
 	public RegistrationForm(Customer customer, Benefitiary benefitiary) {
 		initialize();
 		initializeDependencies();
-		loadCategoryForCbo();
-		loadPremiumAmount();
 		this.customer = customer;
 		this.benefitiary = benefitiary;
+		loadCategoryForCbo();
+		loadPremiumAmount();
+		
 	}
 
 	private void initializeDependencies() {
@@ -99,10 +104,17 @@ public class RegistrationForm {
 		this.categoryList.forEach(cl -> cboCategory.addItem(cl.getCategory_name()));
 	}
 	private void loadPremiumAmount() {
+		this.premiumAmount=new PremiumAmount();
 		this.cboPremiumAmount.addItem("Select Amount");
-		this.cboPremiumAmount.addItem("5000000");
-		this.cboPremiumAmount.addItem("10000000");
-		this.cboPremiumAmount.addItem("15000000");
+		List<Long> actualList=premiumAmount.getPremiumList(customer.getMedical_history());		
+		actualList.forEach(al->this.cboPremiumAmount.addItem(String.valueOf(al)));
+	}
+	
+	
+	
+	private void loadPolicy(Optional<List<Policy>> optionalList) {
+		List<Policy> filteredList=optionalList.orElseGet(()->this.policyList).stream().collect(Collectors.toList());
+		filteredList.forEach(p -> cboPolicy.addItem(p.getPlanName()));
 	}
 	/**
 	 * Initialize the contents of the frame.
@@ -222,7 +234,7 @@ public class RegistrationForm {
 		cboCategory.setBounds(174, 67, 157, 22);
 		customerPanel.add(cboCategory);
 
-		JComboBox<String> cboPolicy = new JComboBox<>();
+		cboPolicy = new JComboBox<>();
 		// cboPolicy.setModel(new DefaultComboBoxModel(new String[] { "Policy" }));
 		cboPolicy.setBounds(174, 131, 157, 22);
 		customerPanel.add(cboPolicy);
@@ -262,7 +274,10 @@ public class RegistrationForm {
 							.filter(c -> c.getCategory_name().equals(cboCategory.getSelectedItem())).findFirst();
 					int s = selectedCategory.map(c -> c.getId()).get();
 					policyList = policyService.findPolicyListByCategoryId(String.valueOf(s));
-					policyList.forEach(p -> cboPolicy.addItem(p.getPlanName()));
+					loadPolicy(Optional.of(policyList.stream().filter(
+							pl->pl.getDuration()+customer.getCustomer_age()<66
+							).collect(Collectors.toList())));
+					
 				} else {
 					cboPolicy.removeAllItems();
 					cboPolicy.addItem("Policy");

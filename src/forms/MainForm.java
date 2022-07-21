@@ -14,10 +14,6 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -26,18 +22,18 @@ import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import models.Category;
 import models.Policy;
 import models.Register;
+import models.UserRole;
 import services.CategoryService;
-import services.PaymentPlanService;
+
 import services.PolicyService;
 import services.RegisterServices;
-import shared.utils.DateUtils;
+import shared.utils.CurrentUserHolder;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -56,9 +52,8 @@ public class MainForm {
 	private List<Policy> policyList = new ArrayList<>();
 
 	private PolicyService policyService;
-	private Register register;
 	private RegisterServices registerServices;
-	private PaymentPlanService paymentPlanService;
+
 	private List<Register> registerList = new ArrayList<>();
 
 	/**
@@ -104,9 +99,7 @@ public class MainForm {
 	private void initializeDependencies() {
 		this.categoryService = new CategoryService();
 		this.policyService = new PolicyService();
-		this.register = new Register();
 		this.registerServices = new RegisterServices();
-		this.paymentPlanService = new PaymentPlanService();
 	}
 
 	private void loadCategoryForCbo() {
@@ -288,6 +281,11 @@ public class MainForm {
 		lblRegisterIdName.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblRegisterIdName.setBounds(677, 139, 144, 18);
 		mainFrame.getContentPane().add(lblRegisterIdName);
+
+		if (CurrentUserHolder.getCurrentUser().getRole() == UserRole.STAFF) {
+			btnEmployee.setVisible(false);
+			btnInsurance.setVisible(false);
+		}
 
 		btnRegister.addActionListener(new ActionListener() {
 

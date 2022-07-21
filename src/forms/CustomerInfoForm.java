@@ -370,10 +370,10 @@ public class CustomerInfoForm {
 						JOptionPane.showMessageDialog(null, "Fill All Fields");
 						resetForm();
 					}
-				} catch (Exception e2) {
+				} catch (NumberFormatException e2) {
 					// TODO: handle exception
 					JOptionPane.showMessageDialog(null, "Input Only Digit for age and income");
-					resetForm();
+					
 				}
 				
 

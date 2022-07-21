@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 public  class Policy 
 {
 	
@@ -55,5 +57,6 @@ public  class Policy
 		this.category = category;
 	}
 
+	
 	
 }

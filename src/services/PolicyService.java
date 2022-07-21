@@ -134,7 +134,7 @@ public class PolicyService implements PolicyRepo{
 
         return policyList;
 	}
-
+	
 	public void deletePolicy(String id) {
 
 		String query = "DELETE FROM policy_plan WHERE policy_id= ?;";
