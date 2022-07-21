@@ -28,8 +28,7 @@ public class RegisterMapper {
 				planDetail.setPremiumAmount(rs.getFloat("premium_amount"));
 				planDetail.setPaymentPlan(this.paymentPlanRepo.findById(String.valueOf(rs.getInt("payment_id"))));
 				register.setPlanDetail(planDetail);
-				System.out.println(register.getPlanDetail().getPremiumAmount());
-
+				
 				Customer customer = new Customer();
 				customer.setId(rs.getInt("cus_id"));
 				customer.setCustomer_name(rs.getString("cus_name"));
@@ -42,7 +41,6 @@ public class RegisterMapper {
 				customer.setCustomer_age(rs.getInt("cus_age"));
 				customer.setMedical_history(rs.getInt("cus_medicalHistory"));
 				register.setCustomer(customer);
-				System.out.println(register.getCustomer().getCustomer_name());
 				
 				Employee employee = new Employee();
 				employee.setId(rs.getInt("emp_id"));
