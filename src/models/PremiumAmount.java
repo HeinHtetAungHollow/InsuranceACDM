@@ -39,6 +39,8 @@ public class PremiumAmount {
 				pl+=add;
 				actList.add(pl);
 			});
+		}else {
+			return this.premiumList;
 		}
 		
 		return actList;

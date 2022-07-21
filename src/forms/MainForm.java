@@ -183,13 +183,16 @@ public class MainForm {
 		btnInsurance.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnInsurance.setBounds(368, 97, 99, 23);
 		DefaultPanel.add(btnInsurance);
-
+		btnInsurance.setVisible(CurrentUserHolder.getCurrentUser().getRole() != UserRole.STAFF);
+		
 		JButton btnEmployee = new JButton("Employee");
 		btnEmployee.setForeground(new Color(34, 139, 34));
 		btnEmployee.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnEmployee.setBounds(480, 95, 99, 23);
 		DefaultPanel.add(btnEmployee);
-
+		btnEmployee.setVisible(CurrentUserHolder.getCurrentUser().getRole() != UserRole.STAFF);
+		System.out.println(CurrentUserHolder.getCurrentUser().getRole());
+		
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.setForeground(new Color(34, 139, 34));
 		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -282,10 +285,7 @@ public class MainForm {
 		lblRegisterIdName.setBounds(677, 139, 144, 18);
 		mainFrame.getContentPane().add(lblRegisterIdName);
 
-		if (CurrentUserHolder.getCurrentUser().getRole() == UserRole.STAFF) {
-			btnEmployee.setVisible(false);
-			btnInsurance.setVisible(false);
-		}
+		
 
 		btnRegister.addActionListener(new ActionListener() {
 
@@ -326,6 +326,23 @@ public class MainForm {
 				EmployeeForm employeeForm = new EmployeeForm();
 				employeeForm.frame.setVisible(true);
 				mainFrame.setVisible(false);
+			}
+		});
+		
+		btnLogout.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int i=JOptionPane.showConfirmDialog(null, "Are u sure logout?");
+				System.out.println(i);
+				if (i==0) {
+					CredentialInfoForm credentialInfoForm=new CredentialInfoForm();
+					credentialInfoForm.frame.setVisible(true);
+					mainFrame.setVisible(false);
+					CurrentUserHolder.setLoggedInUser(null);
+				}
+				
 			}
 		});
 

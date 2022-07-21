@@ -24,19 +24,19 @@ import java.awt.event.ActionEvent;
 public class RegisterConfirmForm {
 
 	public JFrame registerConfirmFrame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
+	private JTextField txtCusName;
+	private JTextField txtCusNrc;
+	private JTextField txtCusAge;
+	private JTextField txtCusPhone;
+	private JTextField txtCusEmail;
+	private JTextField txtCusOccupation;
+	private JTextField txtCusIncome;
+	private JTextField txtBenName;
+	private JTextField txtBenNrc;
+	private JTextField txtBenPhone;
+	private JTextField txtBenEmail;
+	private JTextField txtBenRelation;
+	private JTextField txtPolicyTerms;
 	private Customer customer;
 	private Benefitiary benefitiary;
 	private PaymentPlan paymentPlan;
@@ -64,7 +64,7 @@ public class RegisterConfirmForm {
 		initialize();
 	}
 	public RegisterConfirmForm(Customer customer,Benefitiary benefitiary,PaymentPlan paymentPlan,long premiumAmount) {
-		initialize();
+
 		this.customer=customer;
 		this.benefitiary=benefitiary;
 		this.paymentPlan=paymentPlan;
@@ -74,8 +74,10 @@ public class RegisterConfirmForm {
 		System.out.println(this.customer.getCustomer_name()+"  "+this.benefitiary.getBenefitiary_name()
 				+"  "+ this.paymentPlan.getPayplan()+"  "+this.paymentPlan.getPolicy().getPlanName()+"  "+
 				this.paymentPlan.getPolicy().getCategory().getCategory_name());
-		
+		initialize();
 	}
+	
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -194,46 +196,55 @@ public class RegisterConfirmForm {
 		lblMedicalHistory.setBounds(40, 373, 97, 20);
 		customerPanel.add(lblMedicalHistory);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(175, 44, 170, 20);
-		customerPanel.add(textField);
+		txtCusName = new JTextField();
+		txtCusName.setEnabled(false);
+		txtCusName.setColumns(10);
+		txtCusName.setBounds(175, 44, 170, 20);
+		customerPanel.add(txtCusName);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(175, 81, 170, 20);
-		customerPanel.add(textField_1);
+		txtCusNrc = new JTextField();
+		txtCusNrc.setEnabled(false);
+		txtCusNrc.setColumns(10);
+		txtCusNrc.setBounds(175, 81, 170, 20);
+		customerPanel.add(txtCusNrc);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(175, 117, 47, 20);
-		customerPanel.add(textField_2);
+		txtCusAge = new JTextField();
+		txtCusAge.setEnabled(false);
+		txtCusAge.setColumns(10);
+		txtCusAge.setBounds(175, 117, 47, 20);
+		customerPanel.add(txtCusAge);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(175, 153, 170, 20);
-		customerPanel.add(textField_3);
+		txtCusPhone = new JTextField();
+		txtCusPhone.setEnabled(false);
+		txtCusPhone.setColumns(10);
+		txtCusPhone.setBounds(175, 153, 170, 20);
+		customerPanel.add(txtCusPhone);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(175, 255, 170, 20);
-		customerPanel.add(textField_4);
+		txtCusEmail = new JTextField();
+		txtCusEmail.setEnabled(false);
+		txtCusEmail.setColumns(10);
+		txtCusEmail.setBounds(175, 255, 170, 20);
+		customerPanel.add(txtCusEmail);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(175, 295, 170, 20);
-		customerPanel.add(textField_5);
+		txtCusOccupation = new JTextField();
+		txtCusOccupation.setEnabled(false);
+		txtCusOccupation.setColumns(10);
+		txtCusOccupation.setBounds(175, 295, 170, 20);
+		customerPanel.add(txtCusOccupation);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(175, 333, 170, 20);
-		customerPanel.add(textField_6);
+		txtCusIncome = new JTextField();
+		txtCusIncome.setEnabled(false);
+		txtCusIncome.setColumns(10);
+		txtCusIncome.setBounds(175, 333, 170, 20);
+		customerPanel.add(txtCusIncome);
 		
-		JComboBox cboMedicalHistory = new JComboBox();
+		JComboBox<Integer> cboMedicalHistory = new JComboBox<>();
+		cboMedicalHistory.setEnabled(false);
 		cboMedicalHistory.setBounds(172, 373, 62, 22);
 		customerPanel.add(cboMedicalHistory);
 		
 		JTextPane txtPaneCusAddress = new JTextPane();
+		txtPaneCusAddress.setEnabled(false);
 		txtPaneCusAddress.setBounds(175, 182, 170, 65);
 		customerPanel.add(txtPaneCusAddress);
 		
@@ -278,96 +289,146 @@ public class RegisterConfirmForm {
 		lblRelation.setBounds(40, 294, 97, 20);
 		BenefitiaryPanel.add(lblRelation);
 		
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(175, 44, 170, 20);
-		BenefitiaryPanel.add(textField_7);
+		txtBenName = new JTextField();
+		txtBenName.setEnabled(false);
+		txtBenName.setEditable(false);
+		txtBenName.setColumns(10);
+		txtBenName.setBounds(175, 44, 170, 20);
+		BenefitiaryPanel.add(txtBenName);
 		
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		textField_8.setBounds(175, 81, 170, 20);
-		BenefitiaryPanel.add(textField_8);
+		txtBenNrc = new JTextField();
+		txtBenNrc.setEnabled(false);
+		txtBenNrc.setEditable(false);
+		txtBenNrc.setColumns(10);
+		txtBenNrc.setBounds(175, 81, 170, 20);
+		BenefitiaryPanel.add(txtBenNrc);
 		
-		textField_9 = new JTextField();
-		textField_9.setColumns(10);
-		textField_9.setBounds(175, 117, 170, 20);
-		BenefitiaryPanel.add(textField_9);
+		txtBenPhone = new JTextField();
+		txtBenPhone.setEnabled(false);
+		txtBenPhone.setEditable(false);
+		txtBenPhone.setColumns(10);
+		txtBenPhone.setBounds(175, 117, 170, 20);
+		BenefitiaryPanel.add(txtBenPhone);
 		
-		textField_10 = new JTextField();
-		textField_10.setColumns(10);
-		textField_10.setBounds(175, 255, 170, 20);
-		BenefitiaryPanel.add(textField_10);
+		txtBenEmail = new JTextField();
+		txtBenEmail.setEnabled(false);
+		txtBenEmail.setEditable(false);
+		txtBenEmail.setColumns(10);
+		txtBenEmail.setBounds(175, 255, 170, 20);
+		BenefitiaryPanel.add(txtBenEmail);
 		
-		textField_11 = new JTextField();
-		textField_11.setColumns(10);
-		textField_11.setBounds(175, 295, 170, 20);
-		BenefitiaryPanel.add(textField_11);
+		txtBenRelation = new JTextField();
+		txtBenRelation.setEnabled(false);
+		txtBenRelation.setEditable(false);
+		txtBenRelation.setColumns(10);
+		txtBenRelation.setBounds(175, 295, 170, 20);
+		BenefitiaryPanel.add(txtBenRelation);
 		
 		JTextPane txtPaneBenAddress = new JTextPane();
+		txtPaneBenAddress.setEnabled(false);
+		txtPaneBenAddress.setEditable(false);
 		txtPaneBenAddress.setBounds(175, 152, 170, 92);
 		BenefitiaryPanel.add(txtPaneBenAddress);
 		
-		JPanel customerPanel_1 = new JPanel();
-		customerPanel_1.setLayout(null);
-		customerPanel_1.setBackground(SystemColor.controlHighlight);
-		customerPanel_1.setBounds(857, 165, 382, 415);
-		registerConfirmFrame.getContentPane().add(customerPanel_1);
+		JPanel insurancePanel = new JPanel();
+		insurancePanel.setLayout(null);
+		insurancePanel.setBackground(SystemColor.controlHighlight);
+		insurancePanel.setBounds(857, 165, 382, 415);
+		registerConfirmFrame.getContentPane().add(insurancePanel);
 		
 		JLabel lblInsuranceInformation = new JLabel("Insurance Information");
 		lblInsuranceInformation.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblInsuranceInformation.setBounds(129, 11, 157, 22);
-		customerPanel_1.add(lblInsuranceInformation);
+		insurancePanel.add(lblInsuranceInformation);
 		
 		JLabel lblCategory = new JLabel("Category");
 		lblCategory.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblCategory.setBounds(40, 67, 97, 20);
-		customerPanel_1.add(lblCategory);
+		insurancePanel.add(lblCategory);
 		
 		JLabel lblPolicy = new JLabel("Policy");
 		lblPolicy.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblPolicy.setBounds(40, 131, 97, 20);
-		customerPanel_1.add(lblPolicy);
+		insurancePanel.add(lblPolicy);
 		
 		JLabel lblPaymentPlan = new JLabel("Payment Plan");
 		lblPaymentPlan.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblPaymentPlan.setBounds(40, 280, 97, 20);
-		customerPanel_1.add(lblPaymentPlan);
+		insurancePanel.add(lblPaymentPlan);
 		
 		JLabel lblPremiumAmount = new JLabel("Premium Amount");
 		lblPremiumAmount.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblPremiumAmount.setBounds(40, 345, 112, 20);
-		customerPanel_1.add(lblPremiumAmount);
+		insurancePanel.add(lblPremiumAmount);
 		
 		JLabel lblPolicyTerms = new JLabel("Policy Terms");
 		lblPolicyTerms.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblPolicyTerms.setBounds(40, 207, 97, 20);
-		customerPanel_1.add(lblPolicyTerms);
+		insurancePanel.add(lblPolicyTerms);
 		
-		textField_12 = new JTextField();
-		textField_12.setColumns(10);
-		textField_12.setBounds(174, 208, 47, 20);
-		customerPanel_1.add(textField_12);
+		txtPolicyTerms = new JTextField();
+		txtPolicyTerms.setEnabled(false);
+		txtPolicyTerms.setColumns(10);
+		txtPolicyTerms.setBounds(174, 208, 47, 20);
+		insurancePanel.add(txtPolicyTerms);
 		
-		JComboBox cboCategory = new JComboBox();
+		JComboBox<String> cboCategory = new JComboBox<>();
+		cboCategory.setEnabled(false);
 		cboCategory.setBounds(174, 67, 157, 22);
-		customerPanel_1.add(cboCategory);
+		insurancePanel.add(cboCategory);
 		
-		JComboBox cboPolicy = new JComboBox();
+		JComboBox<String> cboPolicy = new JComboBox<>();
+		cboPolicy.setEnabled(false);
 		cboPolicy.setBounds(174, 131, 157, 22);
-		customerPanel_1.add(cboPolicy);
+		insurancePanel.add(cboPolicy);
 		
-		JComboBox cboPaymentPlan = new JComboBox();
+		JComboBox<Integer> cboPaymentPlan = new JComboBox<>();
+		cboPaymentPlan.setEnabled(false);
 		cboPaymentPlan.setBounds(174, 280, 90, 22);
-		customerPanel_1.add(cboPaymentPlan);
+		insurancePanel.add(cboPaymentPlan);
 		
-		JComboBox cboPremiumAmount = new JComboBox();
+		JComboBox<Float> cboPremiumAmount = new JComboBox<>();
+		cboPremiumAmount.setEnabled(false);
 		cboPremiumAmount.setBounds(174, 345, 157, 22);
-		customerPanel_1.add(cboPremiumAmount);
+		insurancePanel.add(cboPremiumAmount);
 		
+		// TODO SET DATA
+		txtCusName.setText(this.customer.getCustomer_name());
+		txtCusNrc.setText(this.customer.getCustomer_nrc());
+		txtCusAge.setText(String.valueOf(this.customer.getCustomer_age()));
+		txtCusPhone.setText(this.customer.getCustomer_phone());
+		txtPaneCusAddress.setText(this.customer.getCustomer_address());
+		txtCusOccupation.setText(this.customer.getCustomer_occupation());
+		txtCusIncome.setText(String.valueOf(this.customer.getCustomer_income()));
+		cboMedicalHistory.addItem(this.customer.getMedical_history());
+		txtCusEmail.setText(this.customer.getCustomer_email());
+		
+		txtBenName.setText(this.benefitiary.getBenefitiary_name());
+		txtBenNrc.setText(this.benefitiary.getBenefitiary_nrc());
+		txtBenEmail.setText(this.benefitiary.getBenefitiary_email());
+		txtBenPhone.setText(this.benefitiary.getBenefitiary_phone());
+		txtPaneBenAddress.setText(this.benefitiary.getBenefitiary_address());
+		txtBenRelation.setText(this.benefitiary.getRelation());
+		
+		
+		cboCategory.addItem(this.paymentPlan.getPolicy().getCategory().getCategory_name());
+		cboPolicy.addItem(this.paymentPlan.getPolicy().getPlanName());
+		txtPolicyTerms.setText(String.valueOf(this.paymentPlan.getPolicy().getDuration()));
+		cboPaymentPlan.addItem(this.paymentPlan.getPayplan());
+		cboPremiumAmount.addItem(this.planDetail.getPremiumAmount());
+		
+		
+		
+		
+		
+		
+		
+		
+		//
 		JButton btnBack = new JButton("BACK");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CustomerInfoForm customerInfoForm = new CustomerInfoForm();
+				CustomerInfoForm customerInfoForm = new CustomerInfoForm(customer,benefitiary);
 				customerInfoForm.customerInfoFrame.setVisible(true);
 				registerConfirmFrame.setVisible(false);
 			}

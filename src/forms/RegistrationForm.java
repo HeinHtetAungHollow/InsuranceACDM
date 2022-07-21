@@ -329,7 +329,7 @@ public class RegistrationForm {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				CustomerInfoForm customerInfoForm = new CustomerInfoForm();
+				CustomerInfoForm customerInfoForm = new CustomerInfoForm(customer,benefitiary);
 				customerInfoForm.customerInfoFrame.setVisible(true);
 				registerFrame.setVisible(false);
 			}

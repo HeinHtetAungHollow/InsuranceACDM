@@ -26,6 +26,7 @@ import models.Benefitiary;
 import models.Customer;
 import models.CustomerDetail;
 import services.CustomerServices;
+import shared.utils.CurrentUserHolder;
 
 public class CustomerInfoForm {
 
@@ -72,6 +73,14 @@ public class CustomerInfoForm {
 		//System.out.println(new java.sql.Date(new Date().getTime()));
 		loadMedicalHistoryLevelCbo();
 	}
+	
+	public CustomerInfoForm(Customer customer,Benefitiary benefitiary) {
+		initialize();
+		loadMedicalHistoryLevelCbo();
+		this.customer=customer;
+		this.benefitiary=benefitiary;
+		setForm();
+	}
 	private void loadMedicalHistoryLevelCbo() {
 		List<Integer> medLvl= new ArrayList<>();
 		medLvl.add(1);
@@ -99,7 +108,25 @@ public class CustomerInfoForm {
 		txtPaneBenAddress.setText("");
 		txtBenRelation.setText("");
 	}
-
+	
+	private void setForm() {
+		txtCusName.setText(customer.getCustomer_name());
+		txtCusPhone.setText(customer.getCustomer_phone());
+		txtCusNrc.setText(customer.getCustomer_nrc());
+		txtPaneCusAddress.setText(customer.getCustomer_address());
+		txtCusEmail.setText(customer.getCustomer_email());
+		txtCusAge.setText(String.valueOf(customer.getCustomer_age()));
+		txtOccupation.setText(customer.getCustomer_occupation());
+		txtIncome.setText(String.valueOf(customer.getCustomer_income()));
+		cboMedicalHistory.setSelectedIndex(customer.getMedical_history());
+		
+		txtBenName.setText(benefitiary.getBenefitiary_name());
+		txtBenNrc.setText(benefitiary.getBenefitiary_nrc());
+		txtBenPhone.setText(benefitiary.getBenefitiary_phone());
+		txtBenEmail.setText(benefitiary.getBenefitiary_email());
+		txtPaneBenAddress.setText(benefitiary.getBenefitiary_address());
+		txtBenRelation.setText(benefitiary.getRelation());
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -137,22 +164,22 @@ public class CustomerInfoForm {
 		btnRegister.setBounds(145, 97, 89, 23);
 		DefaultPanel.add(btnRegister);
 
-		JButton btnClaim = new JButton("Claim");
-		btnClaim.setForeground(new Color(34, 139, 34));
-		btnClaim.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnClaim.setBounds(244, 97, 89, 23);
-		DefaultPanel.add(btnClaim);
+		JButton btnClaimList = new JButton("Claim List");
+		btnClaimList.setForeground(new Color(34, 139, 34));
+		btnClaimList.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnClaimList.setBounds(244, 97, 105, 23);
+		DefaultPanel.add(btnClaimList);
 
 		JButton btnInsurance = new JButton("Insurance");
 		btnInsurance.setForeground(new Color(34, 139, 34));
 		btnInsurance.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnInsurance.setBounds(343, 97, 99, 23);
+		btnInsurance.setBounds(361, 95, 99, 23);
 		DefaultPanel.add(btnInsurance);
 
 		JButton btnEmployee = new JButton("Employee");
 		btnEmployee.setForeground(new Color(34, 139, 34));
 		btnEmployee.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnEmployee.setBounds(452, 97, 99, 23);
+		btnEmployee.setBounds(470, 95, 99, 23);
 		DefaultPanel.add(btnEmployee);
 
 		JButton btnLogout = new JButton("Logout");
@@ -353,7 +380,66 @@ public class CustomerInfoForm {
 		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnCancel.setBounds(566, 497, 155, 29);
 		panel.add(btnCancel);
+		
+		btnHome.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MainForm mainForm=new MainForm();
+				mainForm.mainFrame.setVisible(true);
+				customerInfoFrame.setVisible(false);
+			}
+		});
+		
+		btnClaimList.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ClaimListForm claimListForm = new ClaimListForm();
+				claimListForm.claimListFrame.setVisible(true);
+				customerInfoFrame.setVisible(false);
+			}
+		});
+
+		btnInsurance.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		btnEmployee.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				EmployeeForm employeeForm = new EmployeeForm();
+				employeeForm.frame.setVisible(true);
+				customerInfoFrame.setVisible(false);
+			}
+		});
+		
+		btnLogout.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int i=JOptionPane.showConfirmDialog(null, "Are u sure logout?");
+				System.out.println(i);
+				if (i==0) {
+					CredentialInfoForm credentialInfoForm=new CredentialInfoForm();
+					credentialInfoForm.frame.setVisible(true);
+					customerInfoFrame.setVisible(false);
+					CurrentUserHolder.setLoggedInUser(null);
+				}
+				
+			}
+		});
+		
 		btnNext.addActionListener(new ActionListener() {
 
 			@Override
@@ -379,7 +465,17 @@ public class CustomerInfoForm {
 
 			}
 		});
-
+		
+		btnCancel.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MainForm mainForm=new MainForm();
+				mainForm.mainFrame.setVisible(true);
+				customerInfoFrame.setVisible(false);
+			}
+		});
 	}
 
 	private Customer saveCusInfo() throws NumberFormatException {
